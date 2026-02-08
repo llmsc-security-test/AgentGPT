@@ -1,37 +1,33 @@
-FROM python:3.11-slim-buster as prod
+# Dockerfile for Reworkd Platform
+FROM python:3.11-slim-buster
 
+# Install build dependencies
 RUN apt-get update && apt-get install -y \
-  default-libmysqlclient-dev \
-  gcc \
-  pkg-config \
-  openjdk-11-jdk \
-  build-essential \
-  && rm -rf /var/lib/apt/lists/*
+    default-libmysqlclient-dev \
+    gcc \
+    pkg-config \
+    openjdk-11-jdk \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
+# Install Poetry
 RUN pip install poetry==1.4.2
-
-# Configuring poetry
 RUN poetry config virtualenvs.create false
 
-# Copying requirements of a project
-COPY pyproject.toml /app/src/
+# Set working directory
 WORKDIR /app/src
 
-# Installing requirements
-RUN poetry install --only main
-# Removing gcc
-RUN apt-get purge -y \
-  g++ \
-  gcc \
-  pkg-config \
-  && rm -rf /var/lib/apt/lists/*
-
-# Copying actual application
-COPY . /app/src/
+# Copy and install requirements
+COPY pyproject.toml .
 RUN poetry install --only main
 
-CMD ["/usr/local/bin/python", "-m", "reworkd_platform"]
+# Copy application code
+COPY . .
 
-FROM prod as dev
+# Expose port
+EXPOSE 11230
 
-RUN poetry install
+# Set entrypoint
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]

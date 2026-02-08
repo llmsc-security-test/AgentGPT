@@ -1,14 +1,15 @@
 #!/usr/bin/env sh
 
-host=agentgpt_db
-port=3306
+# Wait for database to be available
+host="${REWORKD_PLATFORM_DB_HOST:-localhost}"
+port="${REWORKD_PLATFORM_DB_PORT:-3307}"
 
-until echo "SELECT 1;" | nc "$host" "$port" > /dev/null 2>&1; do
-  >&2 echo "Database is unavailable - Sleeping..."
+echo "Waiting for database at $host:$port..."
+while ! echo "SELECT 1;" | nc "$host" "$port" > /dev/null 2>&1; do
   sleep 2
 done
 
->&2 echo "Database is available! Continuing..."
+echo "Database is available! Starting platform service..."
 
-# Run cmd
-exec "$@"
+# Start the platform service
+exec python -m reworkd_platform

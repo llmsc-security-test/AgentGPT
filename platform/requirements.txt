@@ -1,0 +1,36 @@
+# Core FastAPI framework
+fastapi>=0.98.0
+uvicorn[standard]>=0.22.0
+pydantic[dotenv]<2.0
+ujson>=5.8.0
+
+# Database
+sqlalchemy[asyncio,mypy]>=2.0.21
+aiomysql>=0.1.1
+mysqlclient>=2.2.0
+
+# AWS and external services
+boto3>=1.28.51
+openai>=0.28.0
+replicate>=0.8.4
+wikipedia>=1.4.0
+lanarky>=0.7.15
+tiktoken>=0.5.1
+pinecone-client>=2.2.4
+stripe>=5.5.0
+grpcio>=1.58.0
+aws-secretsmanager-caching>=1.1.1.5
+botocore>=1.31.51
+
+# Additional dependencies
+sentry-sdk>=1.31.0
+loguru>=0.7.2
+aiokafka>=0.8.1
+requests>=2.31.0
+langchain>=0.0.295
+cryptography>=41.0.4
+httpx>=0.25.0
+python-multipart>=0.0.6
+
+# Runtime dependencies (from pyproject.toml)
+yarl>=1.0.0
