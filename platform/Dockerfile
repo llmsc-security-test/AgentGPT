@@ -1,5 +1,5 @@
 # Dockerfile for Reworkd Platform
-FROM python:3.11-slim-buster
+FROM python:3.11-slim-bullseye
 
 # Install build dependencies
 RUN apt-get update && apt-get install -y \
